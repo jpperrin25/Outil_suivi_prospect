@@ -7,6 +7,7 @@ import { Job, JobModel } from "./Job";
 import { JobStatusHistory, JobStatusHistoryModel } from "./JobStatusHistory";
 import { Prospect, ProspectModel } from "./Prospect";
 import { ProspectImport, ProspectImportModel, ProspectImportRow, ProspectImportRowModel } from "./ProspectImport";
+import { ProspectInteraction, ProspectInteractionModel } from "./ProspectInteraction";
 
 export const initModels = (sequelize: Sequelize) => {
     User(sequelize);
@@ -18,6 +19,7 @@ export const initModels = (sequelize: Sequelize) => {
     Prospect(sequelize);
     ProspectImport(sequelize);
     ProspectImportRow(sequelize);
+    ProspectInteraction(sequelize);
 
     // Un utilisateur possède ses entreprises et ses candidatures (supprimées avec lui)
     UserModel.hasMany(EntrepriseModel, { foreignKey: "userId", onDelete: "CASCADE", onUpdate: "CASCADE" });
@@ -53,4 +55,8 @@ export const initModels = (sequelize: Sequelize) => {
     ProspectImportModel.belongsTo(UserModel, { foreignKey: "userId" });
     ProspectImportModel.hasMany(ProspectImportRowModel, { foreignKey: "importId", as: "rows", onDelete: "CASCADE", onUpdate: "CASCADE" });
     ProspectImportRowModel.belongsTo(ProspectImportModel, { foreignKey: "importId", as: "import" });
+    ProspectModel.hasMany(ProspectInteractionModel, { foreignKey: "prospectId", as: "interactions", onDelete: "CASCADE", onUpdate: "CASCADE" });
+    ProspectInteractionModel.belongsTo(ProspectModel, { foreignKey: "prospectId", as: "prospect" });
+    UserModel.hasMany(ProspectInteractionModel, { foreignKey: "userId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+    ProspectInteractionModel.belongsTo(UserModel, { foreignKey: "userId" });
 };
