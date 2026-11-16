@@ -50,7 +50,7 @@ Si tu modifies un modèle plus tard (nouvelle colonne), lance une fois avec `DB_
 - **Candidatures** : vue tableau (glisser-déposer d'une carte pour changer son statut) ou liste, recherche, filtres (statut, type, intérêt minimum), tri (dernières modifiées, intérêt, prochaine relance, date d'envoi, entreprise).
 - **Fiche candidature** : poste, entreprise, intérêt, statut, dates (envoi, dernier contact, prochaine relance), contact, lien de l'offre, notes, **historique** de tous les changements de statut et relances.
 - **Entreprises** : note d'intérêt modifiable en un clic.
-- **Prospects** : import CSV contrôlé des entreprises et contacts, aperçu avant écriture, historique des lots, données brutes conservées, source et statut email conservés, dédoublonnage prudent et approbation manuelle.
+- **Prospects** : import CSV contrôlé des entreprises et contacts, aperçu avant écriture, historique des lots, données brutes conservées, source et statut email conservés, dédoublonnage prudent et approbation manuelle. Les interactions (LinkedIn, email ou autre) sont conservées dans un historique distinct, avec la date, le sens et l’état de réponse.
 - **Réglages** : statuts (nom, couleur, famille, ordre), types d'offre, compte, export CSV (ouvrable dans Excel).
 
 Tout est modifiable ou supprimable à tout moment. Supprimer un statut, un type d'offre ou une entreprise utilisés demande toujours quoi faire des candidatures concernées : rien n'est perdu par accident.
@@ -87,6 +87,10 @@ Réponses : `{ "status": "SUCCESS" | "FAILED" | "CONFLICT" | "ERROR", ... }`.
 
 Familles de statut (`kind`) : `todo`, `sent`, `progress`, `success`, `failure`. Elles servent aux statistiques.
 Dates au format `YYYY-MM-DD`. Intérêt : entier de 1 à 5, `null` pour retirer la note.
+
+### Historique LinkedIn local
+
+Le lot privé d’échanges se place dans `private-data/linkedin-interactions.json` (ce dossier est ignoré par Git). Après création du compte dans l’application, lancer `npm run import-linkedin -- adresse-du-compte`. L’import est idempotent et rattache contacts et événements à ce compte. Il ne transmet rien à LinkedIn et n’envoie aucun message. Les événements apparaissent dans la colonne « Dernier échange » de la liste Prospects.
 
 ## Import initial Apollo / Excel
 
