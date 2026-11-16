@@ -9,6 +9,7 @@
     "dev": "tsx --watch src/server.ts",
     "start": "tsx src/server.ts",
     "fixtures": "tsx src/db/fixtures/loadFixtures.ts",
+    "import-linkedin": "tsx src/db/fixtures/importInteractions.ts",
     "typecheck": "tsc --noEmit",
     "test": "NODE_ENV=test node --import tsx --test tests/*.test.ts"
   },
