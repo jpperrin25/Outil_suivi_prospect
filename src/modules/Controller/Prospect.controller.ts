@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { Op } from "sequelize";
 import { EntrepriseModel } from "../../models/Entreprise";
 import { ProspectModel } from "../../models/Prospect";
+import { ProspectInteractionModel } from "../../models/ProspectInteraction";
 import { ProspectImportModel, ProspectImportRowModel, type ProspectImportKind } from "../../models/ProspectImport";
 import { getUserId } from "../../middleware/authentification";
 import { badRequest, notFound } from "../../utils/http";
@@ -33,7 +34,10 @@ export const prospectController = {
                     { email: { [Op.like]: `%${q}%` } }, { jobTitle: { [Op.like]: `%${q}%` } },
                 ] } : {}),
             },
-            include: [{ model: EntrepriseModel, as: "entreprise", attributes: ["idEntreprise", "name", "website"] }],
+            include: [
+                { model: EntrepriseModel, as: "entreprise", attributes: ["idEntreprise", "name", "website"] },
+                { model: ProspectInteractionModel, as: "interactions", attributes: ["idProspectInteraction", "channel", "direction", "occurredAt", "subject", "summary", "responseState"], separate: true, order: [["occurredAt", "DESC"]] },
+            ],
             order: [["createdAt", "DESC"]], limit: 500,
         });
         res.json({ status: "SUCCESS", prospects });
