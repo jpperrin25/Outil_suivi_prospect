@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Prospect Engine</title>
+    <meta name="theme-color" content="#14213d">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314213d'/%3E%3Crect x='6' y='19' width='4' height='7' rx='1' fill='%23ffc933'/%3E%3Crect x='12' y='15' width='4' height='11' rx='1' fill='%23ffc933'/%3E%3Crect x='18' y='11' width='4' height='15' rx='1' fill='%23ffc933'/%3E%3Crect x='24' y='7' width='4' height='19' rx='1' fill='%232a3a63'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- Connexion / inscription -->
+    <div id="auth" class="auth" hidden>
+        <section class="auth-art">
+            <div class="rating" aria-hidden="true">
+                <i class="pip on" style="--h:1"></i><i class="pip on" style="--h:2"></i><i class="pip on" style="--h:3"></i><i class="pip on" style="--h:4"></i><i class="pip" style="--h:5"></i>
+            </div>
+            <div>
+                <h1>Prospect Engine</h1>
+                <p style="margin-top:1rem">Prospects, entreprises, candidatures et relances dans un même espace.</p>
+            </div>
+            <p class="small">Tes données restent dans ta base, sur ta machine.</p>
+        </section>
+        <section class="auth-form">
+            <form id="auth-form" novalidate>
+                <h2 id="auth-title">Connexion</h2>
+                <label class="field" id="auth-name-field" hidden><span>Prénom</span><input type="text" name="username" autocomplete="given-name"></label>
+                <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email"></label>
+                <label class="field"><span>Mot de passe</span><input type="password" name="password" required minlength="6" autocomplete="current-password"></label>
+                <p class="form-error" id="auth-error" role="alert"></p>
+                <button class="btn primary" id="auth-submit" type="submit" style="justify-content:center">Se connecter</button>
+                <p class="auth-switch small"><span id="auth-switch-text">Pas encore de compte ?</span> <button type="button" id="auth-switch">Créer un compte</button></p>
+            </form>
+        </section>
+    </div>
+
+    <!-- Application -->
+    <div id="app" class="shell" hidden>
+        <aside class="side">
+            <div class="brand">
+                <span class="rating" aria-hidden="true"><i class="pip on" style="--h:1"></i><i class="pip on" style="--h:2"></i><i class="pip on" style="--h:3"></i><i class="pip" style="--h:4"></i><i class="pip" style="--h:5"></i></span>
+                Prospect Engine
+            </div>
+            <nav class="nav" id="nav" aria-label="Navigation principale"></nav>
+            <div class="side-foot">
+                <span id="side-user"></span>
+                <button type="button" data-action="logout">Se déconnecter</button>
+            </div>
+        </aside>
+        <main id="main"></main>
+    </div>
+
+    <div id="drawer-root"></div>
+    <dialog id="dlg"></dialog>
+    <div id="toasts" aria-live="polite"></div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

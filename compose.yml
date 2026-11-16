@@ -1,0 +1,34 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_HOST: mysql
+      PORT: 3000
+    ports:
+      - "${PORT:-3000}:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: ${DATABASE_NAME:-alternance}
+      MYSQL_USER: ${DATABASE_USERNAME:-alternance}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-alternance_password}
+    volumes:
+      # Volume nommé : les données survivent aux redémarrages et à `docker compose down`
+      # (seul `docker compose down -v` les supprime).
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql_data:
