@@ -297,3 +297,24 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 **À préciser dans le dictionnaire et la conception UX :** composition exacte du nom, algorithme de génération garantissant la recherche d'un nom disponible, comportement en cas de collision concurrente et textes/actions définitifs de la modale. Cette décision fixe le principe de proposition unique suivie d'une validation humaine ; elle ne valide pas les détails SQL et n'autorise aucune migration ou implémentation.
 
 **Statut :** décision validée par l'utilisateur le 19 novembre 2026. D74 complète D62 et D73 ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d'implémentation.
+
+
+### D75 — composition du nom de campagne
+
+- Le format de nom proposé pour une campagne suit cinq éléments, dans cet ordre : type de campagne, zone géographique, secteur ou cible, période de création et numéro distinctif.
+- Format de référence : `PROS – RENNES – IA DATA – NOV 2026 – 001`.
+- Les éléments sont séparés visuellement par ` – ` afin de rendre le nom lisible et facilement identifiable.
+- Le numéro distinctif permet de différencier les campagnes lorsque les autres éléments du nom sont identiques.
+- Le nom généré reste soumis aux règles D62 et D74 : unicité par utilisateur, contrôle avant proposition, validation humaine et contrôle final à l'enregistrement.
+- Cette structure est le format de référence validé ; les règles précises d'incrémentation du numéro et les adaptations lorsque certaines informations sont absentes restent à définir.
+
+**Statut :** structure en cinq éléments validée par l'utilisateur le 19 novembre 2026. Cette décision complète D62 et D74 ; elle n'autorise aucune migration ou implémentation.
+
+### D76 — présentation tabulaire des critères de requête
+
+- Les critères utilisés pour construire ou paramétrer une requête doivent être présentés sous forme de tableau lorsque cela améliore leur lecture, leur vérification et leur modification.
+- Le tableau doit rendre visibles les critères et leurs valeurs, plutôt que de les dissimuler dans une formulation textuelle compacte.
+- Cette présentation s'applique notamment aux requêtes de recherche et de filtrage utilisées dans le parcours de prospection.
+- La forme exacte du tableau (colonnes, opérateurs, regroupements et édition) sera définie selon le type de requête ; cette décision ne fige pas prématurément un schéma d'interface unique.
+
+**Statut :** préférence UX validée par l'utilisateur le 19 novembre 2026. Cette décision exprime un principe de présentation ; elle n'autorise aucune implémentation.
