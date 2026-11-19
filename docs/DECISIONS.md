@@ -205,3 +205,15 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 **À préciser dans le dictionnaire SQL et les services :** valeurs exactes des états, règles de projection/réconciliation de `email_send.status`, transitions du workflow de `email_batch_item`, agrégation de `email_batch.status`, gestion des événements reçus dans le désordre et éventuelle matérialisation/recalcul. Cette décision ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
 
 **Statut :** décision validée par l’utilisateur le 19 novembre 2026. D68 complète les décisions antérieures ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
+
+### D69 — lots d’e-mails mono-campagne
+
+- Un `email_batch` est rattaché à une seule campagne au maximum.
+- Tous les `email_batch_item` d’un même lot doivent référencer des messages rattachés à cette même campagne.
+- Un lot sans campagne peut contenir des messages sans campagne ; il ne peut pas mélanger des messages associés à une campagne avec des messages sans campagne ni des messages issus de campagnes différentes.
+- Le service doit contrôler cette cohérence avant l’ajout d’un élément au lot et refuser tout mélange.
+- Le modèle V1 est donc mono-campagne ; le support de lots multi-campagnes n’est pas retenu.
+
+**À préciser dans le dictionnaire SQL et les services :** comportement exact des messages sans campagne, contraintes réalisables en base et vérifications transactionnelles lors de l’ajout/modification d’un élément. Cette décision ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
+
+**Statut :** décision validée par l’utilisateur le 19 novembre 2026. D69 complète les décisions antérieures ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
