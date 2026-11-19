@@ -167,6 +167,34 @@ Ces décisions complètent Q1–Q19 et D01–D57. Elles précisent des règles m
 
 D58–D63 sont des décisions métier/architecture validées par l'utilisateur le 19 novembre 2026. Elles complètent les décisions antérieures sans les remplacer. Les détails SQL, contraintes exactes, index, projections d'état, règles de rapprochement automatiques et dépendances de migrations doivent encore être consolidés et relus avant toute migration. Aucune migration, import ou modification de base n'est autorisé par ces décisions seules.
 
+### D64 — propriété et rattachement des contacts
+
+- Un contact appartient à une seule entreprise : `contact.entreprise_id` est obligatoire (`NOT NULL`).
+- La propriété du contact est héritée de l’entreprise via `entreprise.user_id`.
+- Aucun `contact.user_id` n’est ajouté : cela évite de dupliquer la propriété et de créer des incohérences entre le propriétaire du contact et celui de son entreprise.
+- Toute opération de service sur un contact doit vérifier que l’utilisateur courant possède l’entreprise associée.
+- Cette règle complète D05 et D58. Elle ne change pas la règle selon laquelle un prospect entreprise et un prospect contact peuvent coexister.
+
+**Conséquences pour le dictionnaire SQL :** préciser la FK obligatoire `contact.entreprise_id → entreprise.id`, son comportement de suppression cohérent avec la conservation de l’historique, ainsi que les contrôles d’autorisation côté service. Les contraintes et actions FK exactes restent à finaliser dans le dictionnaire.
+
+**Statut :** décision validée par l’utilisateur le 19 novembre 2026. À intégrer au dictionnaire consolidé ; aucune migration ni implémentation n’est autorisée par cette décision seule.
+
+### D65 — structure des oppositions et exclusions (`suppression`)
+
+**Statut :** option A validée par l’utilisateur le 19 novembre 2026.
+
+- Conserver une table unique `suppression`.
+- La table porte trois clés étrangères nullable : `entreprise_id`, `contact_id` et `contact_email_id`.
+- Chaque ligne représente une opposition visant une seule cible : entreprise, contact ou adresse email.
+- Une contrainte doit garantir qu’exactement une des trois colonnes de cible est renseignée.
+- Les relations doivent être de vraies clés étrangères ; un simple couple polymorphique `target_type` / `target_id` sans FK n’est pas accepté.
+- Conserver les épisodes d’opposition et leur historique conformément à D60 : clôturer un épisode plutôt que l’effacer, et créer un nouvel épisode si une nouvelle opposition survient.
+- Pour une adresse email supprimée, préserver la trace anonymisée sans conserver l’adresse en clair, conformément à D59.
+
+**Point technique à vérifier avant de figer le DDL :** définir une contrainte « exactement une cible » compatible avec les versions minimales retenues de SQLite et MySQL. Ne pas présumer de la compatibilité sans test. Les actions FK précises et le comportement lors de l’anonymisation/suppression d’une adresse restent à détailler dans le dictionnaire SQL.
+
+**Statut :** décision validée par l’utilisateur le 19 novembre 2026. Cette décision valide l’exigence métier, pas un DDL précis, et n’autorise aucune migration ou implémentation.
+
 ### D66 — historisation des changements d’état des campagnes
 
 - La table `campaign` conserve l’état courant de chaque campagne.
@@ -377,3 +405,9 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 - Les sources de veille, modalités de collecte, fréquence, règles de déduplication des offres, intégrations autorisées et niveau d'automatisation par plateforme restent à spécifier.
 
 **Statut :** périmètre confirmé par l'utilisateur le 19 novembre 2026. Cette décision fixe les capacités attendues et la règle de sélection des CV ; elle n'autorise aucune implémentation ni connexion fournisseur.
+
+## Vérification de couverture — 19 novembre 2026
+
+- D58–D80 et D82 sont présents dans ce registre.
+- D64 et D65 ont été ajoutées depuis le journal technique Notion.
+- **D81 :** aucune entrée D81 n’a été retrouvée dans le journal technique Notion consulté le 19 novembre 2026. Le numéro est conservé comme lacune à clarifier ; aucun contenu n’est inventé.
