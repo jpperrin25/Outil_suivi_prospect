@@ -351,3 +351,15 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 - Les règles de nommage, de versionnement, de partage (si pertinent), de suppression/archivage et le comportement lorsqu'un champ ou une valeur n'existe plus restent à définir.
 
 **Statut :** bibliothèque de filtres enregistrés validée par l'utilisateur le 19 novembre 2026. Cette décision fixe la capacité fonctionnelle attendue ; elle n'autorise aucune implémentation.
+
+
+### D80 — historique des recherches exécutées
+
+- L'application conserve un historique des recherches exécutées.
+- Chaque entrée conserve au minimum la définition exacte des critères au moment de l'exécution, y compris les groupes ET/OU imbriqués, ainsi que la date et l'heure d'exécution.
+- L'historique indique le nom de la recherche ou du filtre utilisé lorsqu'il existe, et le nombre de résultats obtenus.
+- L'utilisateur peut relancer une ancienne recherche à partir de son historique.
+- Une recherche relancée doit repartir de ses critères enregistrés ; les résultats peuvent naturellement différer selon les données disponibles au moment de la nouvelle exécution.
+- La durée de conservation, les possibilités de renommage/suppression, le stockage des résultats ou uniquement de leur nombre, et la distinction entre filtre enregistré et exécution historique restent à préciser.
+
+**Statut :** historique des recherches exécutées validé par l'utilisateur le 19 novembre 2026. Cette décision fixe la capacité fonctionnelle attendue ; elle n'autorise aucune implémentation.
