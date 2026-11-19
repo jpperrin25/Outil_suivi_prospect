@@ -267,3 +267,18 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 **À préciser :** catalogue des erreurs et codes, formulation des messages, niveau de gravité, options par scénario, conditions de blocage, accessibilité et journalisation des choix. Cette décision valide le principe UX/métier ; elle ne constitue pas encore une spécification exhaustive des modals ni une autorisation d’implémentation.
 
 **Statut :** besoin fonctionnel validé par l’utilisateur le 19 novembre 2026. D73 complète les décisions antérieures ; les scénarios et textes détaillés restent à concevoir.
+
+
+### D73 — messages d’erreur actionnables et décisions utilisateur
+
+- Lorsqu’une anomalie métier ou une donnée bloquante est détectée, l’application doit afficher un message explicite et contextualisé, sous forme de modal lorsque l’intervention de l’utilisateur est nécessaire.
+- Le message doit expliquer le problème détecté et ses conséquences concrètes, puis demander à l’utilisateur quelle action entreprendre lorsque plusieurs traitements sont possibles.
+- Exemples de situations à couvrir : prospect non qualifié, adresse e-mail obsolète ou invalide, contact injoignable, données incohérentes ou preuve manquante.
+- Ne pas supprimer, ignorer, remplacer, réactiver ou contourner automatiquement une donnée ou un prospect sur la seule base de l’erreur détectée ; l’action métier revient à l’utilisateur lorsque le choix a un impact sur les données ou la prospection.
+- Les options proposées doivent être adaptées au cas détecté, par exemple corriger l’adresse, rechercher une autre adresse, mettre le prospect en attente, le marquer comme exclu/à revoir ou annuler l’opération. Ne proposer que les actions réellement sûres et disponibles.
+- Les messages doivent distinguer les erreurs bloquantes, les avertissements et les simples informations ; une opération non sûre ne doit pas se poursuivre tant que le problème n’est pas résolu ou explicitement traité.
+- Les décisions prises depuis ces modals doivent être historisées lorsque cela modifie l’état du prospect, du contact, d’une adresse ou d’une opération.
+
+**À préciser :** catalogue des erreurs et codes, formulation des messages, niveau de gravité, options par scénario, conditions de blocage, accessibilité et journalisation des choix. Cette décision valide le principe UX/métier ; elle ne constitue pas encore une spécification exhaustive des modals ni une autorisation d’implémentation.
+
+**Statut :** besoin fonctionnel validé par l’utilisateur le 19 novembre 2026. D73 complète les décisions antérieures ; les scénarios et textes détaillés restent à concevoir.
