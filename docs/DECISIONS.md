@@ -166,3 +166,18 @@ Ces décisions complètent Q1–Q19 et D01–D57. Elles précisent des règles m
 ## Portée et statut des décisions D58–D63
 
 D58–D63 sont des décisions métier/architecture validées par l'utilisateur le 19 novembre 2026. Elles complètent les décisions antérieures sans les remplacer. Les détails SQL, contraintes exactes, index, projections d'état, règles de rapprochement automatiques et dépendances de migrations doivent encore être consolidés et relus avant toute migration. Aucune migration, import ou modification de base n'est autorisé par ces décisions seules.
+
+### D66 — historisation des changements d’état des campagnes
+
+- La table `campaign` conserve l’état courant de chaque campagne.
+- Chaque transition d’état du cycle de vie est enregistrée dans une table append-only `campaign_event` ; l’historique ne remplace jamais l’état courant et ne doit pas être écrasé.
+- La création d’une campagne produit immédiatement un premier événement représentant la transition `NULL → draft`.
+- Les changements ultérieurs (par exemple activation, mise en pause, reprise, clôture ou réouverture) sont également historisés.
+- Chaque événement conserve au minimum la campagne concernée, l’état précédent, le nouvel état et la date/heure de survenue en UTC. L’origine de l’action (`user` ou `system`) et une note facultative peuvent être conservées pour la traçabilité.
+- La mise à jour de l’état courant de `campaign` et l’insertion correspondante dans `campaign_event` doivent être réalisées dans une même transaction : si l’une échoue, les deux opérations sont annulées.
+- `campaign_event` concerne l’historique des transitions d’état de la campagne. Il reste distinct de `campaign_prospect_event`, qui concerne la participation d’un prospect à une campagne, et de `prospect_event`, qui conserve l’historique global du prospect.
+- Cette décision porte sur les transitions d’état du cycle de vie de la campagne ; elle ne signifie pas que chaque modification de champ (nom, description ou paramètres, par exemple) doit être enregistrée dans `campaign_event`.
+
+**À préciser dans le dictionnaire SQL avant le DDL :** noms et types définitifs des colonnes, FK et règles de conservation, acteur éventuel, valeurs autorisées pour l’origine, index et tests de cohérence. Cette décision ne valide pas l’ensemble du dictionnaire relationnel et n’autorise aucune migration.
+
+**Statut :** décision validée par l’utilisateur le 19 novembre 2026. D66 complète les décisions antérieures ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
