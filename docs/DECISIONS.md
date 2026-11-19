@@ -100,3 +100,69 @@ Source : Journal technique Notion. Le 10 novembre 2026, Jean-Philippe a explicit
 
 ## Statut
 Q1–Q19 validés ; D01–D57 validés. Le dictionnaire relationnel complet, les colonnes/types/nullabilités/index/FK et l'ordre des migrations restent à valider séparément. Aucun changement de code ou migration n'est autorisé par ce registre.
+
+## Décisions complémentaires validées le 19 novembre 2026
+
+Ces décisions complètent Q1–Q19 et D01–D57. Elles précisent des règles métier et des exigences d'intégrité ; elles ne valent pas validation exhaustive du dictionnaire SQL, des types/contraintes physiques, ni autorisation générale de migration ou d'implémentation.
+
+### D58 — granularité et rattachement des prospects entreprise/contact
+
+- `contact.entreprise_id` est obligatoire : un contact appartient à une entreprise.
+- Un prospect entreprise possède `entreprise_id` renseigné et `contact_id = NULL`.
+- Un prospect contact possède `entreprise_id` et `contact_id` tous deux renseignés.
+- Pour un prospect contact, le service doit vérifier transactionnellement que l'entreprise du prospect est exactement celle du contact (`contact.entreprise_id = prospect.entreprise_id`).
+- Un prospect entreprise et un ou plusieurs prospects contact peuvent coexister pour la même entreprise ; ils représentent des démarches distinctes et conservent chacun leur statut et leur historique.
+- Ne jamais transformer le prospect entreprise en prospect contact. Avant de créer un prospect contact, rechercher un prospect existant pour ce contact et le réutiliser afin de préserver son historique.
+- La règle métier est validée ; les contraintes SQL exactes restent à préciser dans le dictionnaire consolidé.
+
+### D59 — suppression confirmée d'une adresse e-mail et anonymisation historique
+
+- La suppression d'une adresse e-mail non conforme exige une confirmation humaine explicite ; aucune suppression automatique sur simple suspicion ou résultat incertain.
+- Après confirmation, retirer l'adresse de la fiche active `contact_email`.
+- Anonymiser les copies historiques de l'adresse, y compris les snapshots de destinataire et les données d'événements qui la contiennent : ne pas conserver l'adresse en clair dans les traces historiques.
+- Conserver les événements techniques et la traçabilité non identifiante utiles (par exemple contact lié si cela reste pertinent, type d'événement, date, résultat, identifiant fournisseur non identifiant et trace qu'une adresse a été supprimée).
+- Ne pas conserver de donnée ou de mécanisme permettant de reconstituer l'adresse supprimée. Si une adresse correcte est retrouvée plus tard, elle est saisie de nouveau manuellement.
+- Cette règle distingue la suppression de l'adresse de la conservation du contact et de son historique métier non identifiant.
+
+### D60 — intégrité référentielle des oppositions et exclusions
+
+- La représentation polymorphe seule (`target_type` + `target_id` sans FK réelle) n'est pas suffisante.
+- Le modèle doit relier explicitement chaque opposition à une cible typée (entreprise, contact ou adresse e-mail) au moyen de relations contrôlables par la base.
+- Une ligne d'opposition correspond à une seule cible ; l'intégrité doit empêcher les cibles ambiguës ou multiples sur une même ligne.
+- Chaque épisode d'opposition est conservé : une levée/clôture termine l'épisode existant ; une opposition ultérieure crée une nouvelle ligne, sans réutiliser ni écraser l'ancienne.
+- La réactivation est une action humaine explicite et historisée.
+- Pour une adresse e-mail supprimée, conserver la trace d'opposition sous une forme anonymisée qui ne réintroduit pas l'adresse en clair.
+- Le choix exact de la structure physique (FK typées, contraintes portables ou tables spécialisées) doit être arrêté dans le dictionnaire SQL consolidé après vérification SQLite/MySQL ; cette décision valide l'exigence d'intégrité, pas un DDL précis.
+
+### D61 — séparation du cycle de vie des envois e-mail
+
+- `email_send` représente l'intention/l'envoi logique d'un message.
+- `email_send_attempt` représente chaque tentative technique liée à cet envoi logique ; plusieurs tentatives peuvent être historisées.
+- `email_event` conserve les faits reçus ou constatés (sent, accepted, delivered, bounce, reply, failure, unknown, etc.) sous forme d'événements append-only.
+- Les événements ne sont pas écrasés et ne doivent pas être forcés dans une succession linéaire : un événement différé (par exemple bounce après delivered) peut survenir ; les faits sont conservés tels quels.
+- L'état courant est une projection/calcul dérivé des tentatives et événements disponibles ; il ne remplace jamais le journal historique.
+- Un résultat `unknown` bloque toute nouvelle tentative automatique tant que le résultat n'a pas été vérifié.
+- Les règles de priorité/réconciliation de la projection courante et les champs matérialisés éventuels doivent être documentés dans le dictionnaire et les services.
+
+### D62 — unicité des noms de campagne
+
+- Le nom d'une campagne est unique dans le périmètre d'un utilisateur, pas globalement entre utilisateurs.
+- La comparaison s'effectue sur une forme normalisée au minimum par suppression des espaces superflus et comparaison insensible à la casse.
+- Une campagne archivée conserve son nom et continue de participer à la règle d'unicité.
+- La suppression physique ne doit pas servir à contourner la règle d'unicité.
+- La clé normalisée et la contrainte/index portables correspondants restent à définir dans le dictionnaire consolidé.
+
+### D63 — rapprochement obligatoire avant intégration des imports
+
+- Aucun import ne doit écrire directement dans les tables métier sans passer par une étape préalable de staging, de rapprochement et de validation.
+- Conserver le fichier original intact et enregistrer chaque opération dans `import_run`, avec ses métadonnées, puis chaque ligne dans `import_row` avec fichier, feuille, numéro de ligne, données brutes, état et erreurs.
+- Comparer les lignes entrantes aux entreprises, contacts et prospects existants avant toute intégration.
+- Réutiliser les identifiants métier existants lorsque la correspondance est certaine ; ne pas recréer des entités déjà présentes.
+- Toute correspondance incertaine ou ambiguë est mise en attente d'une validation humaine ; aucune fusion approximative ou écrasement silencieux.
+- Conserver la provenance du fichier, de la feuille et de la ligne, ainsi que la décision de rapprochement et son résultat.
+- L'intégration dans les tables métier ne peut intervenir qu'après validation du rapprochement selon les règles approuvées.
+- Le processus doit être idempotent et prévenir la réimportation involontaire d'une même source ; les clés et contrôles techniques exacts restent à préciser dans le plan d'import.
+
+## Portée et statut des décisions D58–D63
+
+D58–D63 sont des décisions métier/architecture validées par l'utilisateur le 19 novembre 2026. Elles complètent les décisions antérieures sans les remplacer. Les détails SQL, contraintes exactes, index, projections d'état, règles de rapprochement automatiques et dépendances de migrations doivent encore être consolidés et relus avant toute migration. Aucune migration, import ou modification de base n'est autorisé par ces décisions seules.
