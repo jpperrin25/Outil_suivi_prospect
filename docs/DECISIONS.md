@@ -363,3 +363,17 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 - La durée de conservation, les possibilités de renommage/suppression, le stockage des résultats ou uniquement de leur nombre, et la distinction entre filtre enregistré et exécution historique restent à préciser.
 
 **Statut :** historique des recherches exécutées validé par l'utilisateur le 19 novembre 2026. Cette décision fixe la capacité fonctionnelle attendue ; elle n'autorise aucune implémentation.
+
+
+### D82 — périmètre veille emploi et assistant de candidature
+
+- Le périmètre fonctionnel cible comprend trois capacités liées :
+  1. **Veille intelligente** : surveiller les offres d'alternance et d'emploi, détecter les nouvelles opportunités et les faire remonter directement dans l'application.
+  2. **Enrichissement** : identifier les entreprises, recruteurs et contacts pertinents, ainsi que leurs coordonnées professionnelles, en conservant la traçabilité des sources.
+  3. **Assistant de candidature** : préparer les messages et accompagner l'utilisateur dans les candidatures, notamment par le préremplissage des formulaires et l'assistance jusqu'à leur validation.
+- L'application doit utiliser la bibliothèque de CV déjà conservés dans l'espace privé de l'application. Elle sélectionne le CV existant le plus pertinent pour l'offre ou l'entreprise ; la génération ou la modification automatique d'un CV n'est pas requise dans ce périmètre.
+- Les candidatures via LinkedIn et les sites carrière font partie des parcours envisagés. Les possibilités réelles d'automatisation dépendront des interfaces autorisées, des conditions d'utilisation et des mécanismes disponibles sur chaque plateforme.
+- Les actions engageantes (soumission d'une candidature, envoi d'un message ou d'un email) restent soumises à validation humaine explicite. L'agent peut préparer et préremplir, mais ne doit pas soumettre ou envoyer sans accord.
+- Les sources de veille, modalités de collecte, fréquence, règles de déduplication des offres, intégrations autorisées et niveau d'automatisation par plateforme restent à spécifier.
+
+**Statut :** périmètre confirmé par l'utilisateur le 19 novembre 2026. Cette décision fixe les capacités attendues et la règle de sélection des CV ; elle n'autorise aucune implémentation ni connexion fournisseur.
