@@ -229,3 +229,16 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 **À préciser dans le dictionnaire SQL et les services :** unicité et rattachement de la source `manual` par utilisateur, création idempotente, comportement en cas de source absente et règles de validation des faits/enrichissements. Cette décision ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
 
 **Statut :** décision validée par l’utilisateur le 19 novembre 2026. D70 complète les décisions antérieures ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
+
+### D71 — cloisonnement des preuves avec partage contrôlé du contexte entreprise
+
+- Le cloisonnement des preuves est la règle par défaut : un message ou document généré pour un prospect ne peut pas utiliser des informations propres à un autre contact ou à un autre prospect.
+- Une exception contrôlée est autorisée pour les informations réellement communes à l’entreprise : les faits et recherches au niveau `entreprise` peuvent être réutilisés pour plusieurs contacts rattachés à cette même entreprise.
+- Cette réutilisation ne vaut pas autorisation de partager les informations propres à un contact, son poste, ses responsabilités, son parcours, ses coordonnées ou son historique d’échanges avec un autre contact.
+- Les éléments communs à l’entreprise servent de contexte partagé ; l’angle, les arguments, les bénéfices mis en avant et la formulation doivent être adaptés au rôle et à l’interlocuteur ciblé (par exemple direction technique, RH ou CEO).
+- Les preuves et contenus doivent donc conserver une distinction claire entre le périmètre entreprise, le périmètre contact et le périmètre prospect/message. Le service doit vérifier qu’une preuve réutilisée est bien une information d’entreprise et que le contact ciblé appartient à cette entreprise.
+- Toute preuve spécifique à un contact ou à un prospect reste strictement limitée à son périmètre autorisé ; aucune fusion implicite de contextes entre deux personnes.
+
+**À préciser dans le dictionnaire SQL et les services :** représentation des portées entreprise/contact/prospect, règles de rattachement et de réutilisation des preuves, contrôles transactionnels de cohérence entreprise-contact, et traçabilité des preuves effectivement utilisées pour chaque génération. Cette décision ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
+
+**Statut :** décision validée par l’utilisateur le 19 novembre 2026. D71 complète la règle de cloisonnement des preuves en autorisant uniquement le partage du contexte commun à une même entreprise ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
