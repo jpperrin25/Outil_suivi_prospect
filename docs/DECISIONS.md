@@ -242,3 +242,28 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 **À préciser dans le dictionnaire SQL et les services :** représentation des portées entreprise/contact/prospect, règles de rattachement et de réutilisation des preuves, contrôles transactionnels de cohérence entreprise-contact, et traçabilité des preuves effectivement utilisées pour chaque génération. Cette décision ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
 
 **Statut :** décision validée par l’utilisateur le 19 novembre 2026. D71 complète la règle de cloisonnement des preuves en autorisant uniquement le partage du contexte commun à une même entreprise ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
+
+### D72 — fermeture du compte et conservation des données
+
+- La fermeture du compte ne déclenche pas de suppression physique automatique des données métier ou de l’historique.
+- Le compte peut être désactivé afin de bloquer les nouvelles opérations ; les données historiques restent conservées selon une politique de conservation qui devra être définie.
+- La décision de clôture définitive, d’export ou de suppression éventuelle appartient explicitement à l’utilisateur ; aucune purge automatique ne doit être déclenchée sans son choix.
+- Les éventuelles opérations de clôture définitive devront être explicites, informées et encadrées par une procédure dédiée.
+
+**À préciser :** états du compte, procédure d’export, durée et périmètre de conservation, anonymisation éventuelle et conditions de suppression définitive. Cette décision ne valide pas les détails SQL restants et n’autorise aucune suppression ou implémentation.
+
+**Statut :** principe de contrôle utilisateur validé le 19 novembre 2026. D72 complète les décisions antérieures ; les modalités techniques et la politique de conservation restent ouvertes.
+
+### D73 — messages d’erreur actionnables et décisions utilisateur
+
+- Lorsqu’une anomalie métier ou une donnée bloquante est détectée, l’application doit afficher un message explicite et contextualisé, sous forme de modal lorsque l’intervention de l’utilisateur est nécessaire.
+- Le message doit expliquer le problème détecté et ses conséquences concrètes, puis demander à l’utilisateur quelle action entreprendre lorsque plusieurs traitements sont possibles.
+- Exemples de situations à couvrir : prospect non qualifié, adresse e-mail obsolète ou invalide, contact injoignable, données incohérentes ou preuve manquante.
+- Ne pas supprimer, ignorer, remplacer, réactiver ou contourner automatiquement une donnée ou un prospect sur la seule base de l’erreur détectée ; l’action métier revient à l’utilisateur lorsque le choix a un impact sur les données ou la prospection.
+- Les options proposées doivent être adaptées au cas détecté, par exemple corriger l’adresse, rechercher une autre adresse, mettre le prospect en attente, le marquer comme exclu/à revoir ou annuler l’opération. Ne proposer que les actions réellement sûres et disponibles.
+- Les messages doivent distinguer les erreurs bloquantes, les avertissements et les simples informations ; une opération non sûre ne doit pas se poursuivre tant que le problème n’est pas résolu ou explicitement traité.
+- Les décisions prises depuis ces modals doivent être historisées lorsque cela modifie l’état du prospect, du contact, d’une adresse ou d’une opération.
+
+**À préciser :** catalogue des erreurs et codes, formulation des messages, niveau de gravité, options par scénario, conditions de blocage, accessibilité et journalisation des choix. Cette décision valide le principe UX/métier ; elle ne constitue pas encore une spécification exhaustive des modals ni une autorisation d’implémentation.
+
+**Statut :** besoin fonctionnel validé par l’utilisateur le 19 novembre 2026. D73 complète les décisions antérieures ; les scénarios et textes détaillés restent à concevoir.
