@@ -192,3 +192,16 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 - Le traitement reste soumis à l’approbation humaine individuelle déjà prévue pour chaque message.
 
 **Statut :** décision validée par l’utilisateur le 19 novembre 2026. D67 complète les décisions antérieures ; elle ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
+
+### D68 — responsabilités et source d’autorité des états d’envoi e-mail
+
+- `email_event` est le journal append-only des faits observés ou reçus (par exemple sent, accepted, delivered, bounce, reply, failure, unknown). Les événements ne sont jamais écrasés.
+- `email_send_attempt` conserve le résultat propre à chaque tentative technique.
+- `email_send.status` représente une projection de l’état courant de l’envoi logique, calculée à partir des tentatives et des événements disponibles ; cette projection doit pouvoir être recalculée et ne remplace pas les faits historiques.
+- `email_batch_item` porte le workflow humain de l’élément individuel : préparation, validation, approbation et prise en charge.
+- `email_batch.status` représente l’état global du lot, déterminé à partir de l’état de ses éléments.
+- Chaque niveau conserve ainsi une responsabilité distincte ; les différentes colonnes d’état ne doivent pas devenir des sources de vérité concurrentes pour un même fait.
+
+**À préciser dans le dictionnaire SQL et les services :** valeurs exactes des états, règles de projection/réconciliation de `email_send.status`, transitions du workflow de `email_batch_item`, agrégation de `email_batch.status`, gestion des événements reçus dans le désordre et éventuelle matérialisation/recalcul. Cette décision ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
+
+**Statut :** décision validée par l’utilisateur le 19 novembre 2026. D68 complète les décisions antérieures ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
