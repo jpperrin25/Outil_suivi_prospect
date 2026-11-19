@@ -318,3 +318,14 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 - La forme exacte du tableau (colonnes, opérateurs, regroupements et édition) sera définie selon le type de requête ; cette décision ne fige pas prématurément un schéma d'interface unique.
 
 **Statut :** préférence UX validée par l'utilisateur le 19 novembre 2026. Cette décision exprime un principe de présentation ; elle n'autorise aucune implémentation.
+
+
+### D77 — moteur de requêtes avec logique ET/OU
+
+- Le moteur de recherche et de filtrage doit prendre en charge les opérateurs logiques ET et OU dès la conception V1.
+- Les critères doivent pouvoir être regroupés afin de construire des combinaisons de conditions, et pas uniquement une liste plate de conditions reliées par ET.
+- La représentation des critères doit rester lisible et vérifiable sous forme de tableau, conformément à D76.
+- L'interface pourra exposer progressivement les possibilités avancées, mais le modèle du moteur doit prévoir ET/OU dès le départ.
+- La syntaxe exacte des groupes, la gestion des parenthèses/niveaux d'imbrication, les opérateurs disponibles par type de champ et les limites de complexité restent à spécifier.
+
+**Statut :** prise en charge de ET/OU validée par l'utilisateur le 19 novembre 2026. Cette décision fixe la capacité fonctionnelle attendue ; elle n'autorise aucune implémentation.
