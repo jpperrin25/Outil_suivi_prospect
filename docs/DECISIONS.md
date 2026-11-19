@@ -340,3 +340,14 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 - La profondeur maximale d'imbrication, les limites de complexité, la syntaxe interne et les règles de validation restent à définir.
 
 **Statut :** groupes ET/OU imbriqués validés par l'utilisateur le 19 novembre 2026. Cette décision fixe la capacité fonctionnelle attendue ; elle n'autorise aucune implémentation.
+
+
+### D79 — bibliothèque de filtres enregistrés
+
+- L'utilisateur doit pouvoir enregistrer une requête de recherche/filtrage comme filtre réutilisable dès la V1.
+- Un filtre enregistré possède un nom et conserve sa définition complète, y compris les groupes ET/OU imbriqués.
+- L'utilisateur peut relancer un filtre enregistré sans reconstruire ses critères.
+- L'utilisateur peut modifier un filtre enregistré ou travailler sur une copie sans altérer l'original.
+- Les règles de nommage, de versionnement, de partage (si pertinent), de suppression/archivage et le comportement lorsqu'un champ ou une valeur n'existe plus restent à définir.
+
+**Statut :** bibliothèque de filtres enregistrés validée par l'utilisateur le 19 novembre 2026. Cette décision fixe la capacité fonctionnelle attendue ; elle n'autorise aucune implémentation.
