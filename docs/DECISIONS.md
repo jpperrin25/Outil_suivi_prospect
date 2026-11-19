@@ -282,3 +282,17 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 **À préciser :** catalogue des erreurs et codes, formulation des messages, niveau de gravité, options par scénario, conditions de blocage, accessibilité et journalisation des choix. Cette décision valide le principe UX/métier ; elle ne constitue pas encore une spécification exhaustive des modals ni une autorisation d’implémentation.
 
 **Statut :** besoin fonctionnel validé par l’utilisateur le 19 novembre 2026. D73 complète les décisions antérieures ; les scénarios et textes détaillés restent à concevoir.
+
+
+### D74 — proposition et validation du nom de campagne
+
+- Lors de la création d'une campagne, l'application génère une proposition de nom à partir des informations disponibles sur la campagne (par exemple type, zone géographique, cible/secteur et période).
+- Avant de créer la campagne, l'application présente cette proposition dans une modale formulée explicitement comme une suggestion : « Je vous propose ce nom pour votre campagne : [nom]. Est-ce que ce nom vous convient ? »
+- L'utilisateur doit choisir de valider le nom proposé, de le modifier ou d'annuler la création. La campagne n'est pas créée tant que le nom n'a pas été validé.
+- La proposition doit respecter la règle d'unicité définie en D62, en tenant compte des campagnes existantes, y compris archivées. Si le nom proposé entre en conflit, l'application ajuste sa proposition (par exemple avec un numéro séquentiel) et vérifie à nouveau l'unicité.
+- Le nom reste modifiable par l'utilisateur avant validation. Toute modification manuelle est soumise au même contrôle d'unicité.
+- La validation finale du nom et la création de la campagne doivent être cohérentes : le contrôle d'unicité doit être effectué au moment de l'enregistrement afin d'éviter qu'une campagne concurrente ou une modification entre-temps ne crée un doublon.
+
+**À préciser dans le dictionnaire et la conception UX :** composition exacte du nom, règles de numérotation, comportement en cas de collision au moment de l'enregistrement et textes/actions définitifs de la modale. Cette décision fixe le principe de proposition suivie d'une validation humaine ; elle ne valide pas les détails SQL et n'autorise aucune migration ou implémentation.
+
+**Statut :** décision validée par l'utilisateur le 19 novembre 2026. D74 complète D62 et D73 ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d'implémentation.
