@@ -329,3 +329,14 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 - La syntaxe exacte des groupes, la gestion des parenthèses/niveaux d'imbrication, les opérateurs disponibles par type de champ et les limites de complexité restent à spécifier.
 
 **Statut :** prise en charge de ET/OU validée par l'utilisateur le 19 novembre 2026. Cette décision fixe la capacité fonctionnelle attendue ; elle n'autorise aucune implémentation.
+
+
+### D78 — groupes de requêtes ET/OU imbriqués
+
+- Le moteur de requêtes doit prendre en charge des groupes de conditions ET/OU imbriqués dès la V1.
+- Une requête peut combiner plusieurs groupes, par exemple : (Localisation = Rennes ET Secteur = Data) OU (Secteur = Cyber ET Effectif > 50).
+- La structure doit permettre de représenter explicitement les regroupements et leur logique, sans ambiguïté de priorité entre ET et OU.
+- L'affichage des critères et groupes doit rester lisible et modifiable sous forme de tableau, conformément à D76.
+- La profondeur maximale d'imbrication, les limites de complexité, la syntaxe interne et les règles de validation restent à définir.
+
+**Statut :** groupes ET/OU imbriqués validés par l'utilisateur le 19 novembre 2026. Cette décision fixe la capacité fonctionnelle attendue ; elle n'autorise aucune implémentation.
