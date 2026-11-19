@@ -217,3 +217,15 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 **À préciser dans le dictionnaire SQL et les services :** comportement exact des messages sans campagne, contraintes réalisables en base et vérifications transactionnelles lors de l’ajout/modification d’un élément. Cette décision ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
 
 **Statut :** décision validée par l’utilisateur le 19 novembre 2026. D69 complète les décisions antérieures ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
+
+### D70 — source manuelle réutilisable par utilisateur
+
+- Les tables `entreprise_fact`, `contact_fact` et `enrichment` doivent pouvoir référencer une source même lorsque l’information a été saisie manuellement.
+- Prévoir une source de type `manual` par utilisateur et la réutiliser pour l’ensemble de ses saisies manuelles.
+- Ne pas créer une nouvelle ligne `source` à chaque saisie ou modification.
+- Maintenir `source_id` obligatoire dans les tables de faits et d’enrichissement concernées ; la source `manual` fournit la provenance des informations saisies par l’utilisateur.
+- Distinguer explicitement cette provenance des sources externes telles qu’Apollo, Pappers ou d’autres fournisseurs.
+
+**À préciser dans le dictionnaire SQL et les services :** unicité et rattachement de la source `manual` par utilisateur, création idempotente, comportement en cas de source absente et règles de validation des faits/enrichissements. Cette décision ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
+
+**Statut :** décision validée par l’utilisateur le 19 novembre 2026. D70 complète les décisions antérieures ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
