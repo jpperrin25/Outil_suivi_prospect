@@ -181,3 +181,14 @@ D58–D63 sont des décisions métier/architecture validées par l'utilisateur l
 **À préciser dans le dictionnaire SQL avant le DDL :** noms et types définitifs des colonnes, FK et règles de conservation, acteur éventuel, valeurs autorisées pour l’origine, index et tests de cohérence. Cette décision ne valide pas l’ensemble du dictionnaire relationnel et n’autorise aucune migration.
 
 **Statut :** décision validée par l’utilisateur le 19 novembre 2026. D66 complète les décisions antérieures ; elle ne vaut pas validation du dictionnaire SQL complet ni autorisation de migration ou d’implémentation.
+
+### D67 — nouvelle tentative après échec définitif d’un envoi e-mail
+
+- Un envoi logique (`email_send`) appartient à un seul élément de lot (`email_batch_item`) ; les tentatives techniques correspondantes restent rattachées à cet envoi logique.
+- Si un envoi échoue de manière définitive et qu’une nouvelle tentative volontaire est décidée ultérieurement, créer un nouvel élément dans un nouveau lot, puis un nouvel envoi logique.
+- Conserver intégralement l’ancien élément de lot, l’ancien envoi logique, ses tentatives techniques et ses événements ; ne pas réinitialiser, réutiliser ni écraser l’historique précédent.
+- Un résultat `unknown` reste bloquant : cette décision ne permet pas de relancer tant que l’issue n’a pas été vérifiée.
+- Cette règle concerne une nouvelle opération d’envoi après échec définitif ; elle ne remplace pas la distinction entre tentatives techniques d’un même envoi logique.
+- Le traitement reste soumis à l’approbation humaine individuelle déjà prévue pour chaque message.
+
+**Statut :** décision validée par l’utilisateur le 19 novembre 2026. D67 complète les décisions antérieures ; elle ne valide pas les détails SQL restants et n’autorise aucune migration ou implémentation.
